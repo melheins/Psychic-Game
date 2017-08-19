@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-us" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Psychic-Game
+    </title>
+</head>
+<body>
+<div>
+    <h1>The Psychic Game</h1>
+    <p>Guess what letter I'm thinking of.</p>
+    <p>Wins: <span id="numWins"></span></p>
+    <p>Losses: <span id="numLosses"></span></p>
+    <p>Guesses Left: <span id="guessLeft"></span></p>
+    <p>Your Guesses so far: <span id="currentGuesses"></span></p>
+    <p>Your Current Guess: <span id="userGuess"></span></p>
+</div>
+
+<script type="text/javascript">
+    // Creates an array that lists out all of the options (A-Z).
+    var computerChoices = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    // Creates variables to hold # of times the user has guessed the letter correctly
+    var numWins = 0;
+    // Creates variables to hold # of times the user has failed to guess the letter correctly after exhausting all guesses
+    var numLosses = 0;
+    // Creates variables to hold # of guesses left
+    var guessLeft = 9;
+    // Creates variables to hold the specific letters that the user typed
+    var currentGuesses = [];
+
+    // This function is run whenever the user presses a key.
+    document.onkeyup = function (event) {
+        // Determines which key was pressed.
+        var userGuess = event.key;
+        // Randomly chooses a choice from the options array. This is the Computer's guess.
+        var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+        // This logic checks the user's guess
+        if (typeof userGuess === 'string') {
+
+            if ((userGuess.toLowerCase() === computerGuess)) {
+                numWins++;
+                guessLeft = 9;
+                currentGuesses = [];
+                userGuess = '';
+            }
+            else {
+                guessLeft--;
+                if (guessLeft > 0) {
+                    currentGuesses.push(userGuess);
+                } else {
+                    numLosses++;
+                    guessLeft = 9;
+                    currentGuesses = [];
+                    userGuess = '';
+                }
+            }
+
+            // Update HTML with variable values
+            var numWinsSpan = document.getElementById('numWins');
+            numWinsSpan.innerHTML = numWins;
+            var numLossesSpan = document.getElementById('numLosses');
+            numLossesSpan.innerHTML = numLosses;
+            var guessLeftSpan = document.getElementById('guessLeft');
+            guessLeftSpan.innerHTML = guessLeft;
+            var currentGuessesSpan = document.getElementById('currentGuesses');
+            currentGuessesSpan.innerHTML = currentGuesses;
+            var userGuessSpan = document.getElementById('userGuess');
+            userGuessSpan.innerHTML = userGuess;
+        }
+    };
+</script>
+</body>
